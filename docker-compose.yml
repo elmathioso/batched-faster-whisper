@@ -1,0 +1,24 @@
+services:
+  faster-whisper:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: faster-whisper
+    environment:
+      - WHISPER_MODEL=large-v3
+      - WHISPER_LANG=auto
+      - WHISPER_BEAM=5
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./src:/src
+      - ./cache:/cache
+      - work_transcripts:/transcripts
+      - work_transcripts_results:/results
+    restart: unless-stopped
+    runtime: nvidia
+
+volumes:
+  work_transcripts:
+    external: true
+  work_transcripts_results:
+    external: true
