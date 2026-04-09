@@ -9,6 +9,7 @@ class Transcripter:
     def __init__(self):
 
         self.model_size = os.environ['WHISPER_MODEL']
+        self.beam_size = int(os.environ['WHISPER_BEAM'])
         self.model = WhisperModel(self.model_size, device="cuda", compute_type="float16", download_root="/cache")
 
 
@@ -21,7 +22,7 @@ class Transcripter:
                 print(input_file)
 
                 # Load file info
-                segments, info = self.model.transcribe(input_file, beam_size=os.environ['WHISPER_BEAM'])
+                segments, info = self.model.transcribe(input_file, beam_size=self.beam_size)
 
                 print("Detected language '%s' with probability %f" % (info.language, info.language_probability))
 
